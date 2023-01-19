@@ -1,0 +1,152 @@
+create table Emp1(Eno number(7),Ename varchar2(20),Address varchar2(20));
+
+
+Table created.
+
+ 
+
+2)Insertion:
+
+ 
+
+ insert into Emp1 values(101,'Samruddhi','Kudal');
+
+1 row created.
+
+
+SQL> select *from Emp1;
+
+ 
+
+       ENO ENAME                ADDRESS
+
+---------- -------------------- --------------------
+
+       101 Samruddhi            Kudal
+
+
+3)Table creation:
+
+ 
+
+create table Emp2(Eno number(7),Email varchar2(20),salary number(10));
+
+Table created.
+
+ 
+
+4)Insertion:
+
+
+ 
+
+ insert into Emp2 values(101,'Samruddhi@yahoo.com',10000);
+
+1 row created.
+
+
+select * from Emp2;
+
+ 
+
+       ENO EMAIL                    SALARY
+
+---------- -------------------- ----------
+
+       101 Samruddhi@yahoo.com       10000
+
+10 rows selected.
+
+ 
+
+5)Link creation:
+
+ 
+
+CREATE PUBLIC DATABASE LINK EMP_LINK1 CONNECT TO system IDENTIFIED BY manager USING 'ORCL';
+
+ 
+
+Database link created.
+
+ 
+
+
+ CREATE PUBLIC DATABASE LINK EMP_LINK2 CONNECT TO system IDENTIFIED BY manager USING 'ORCL';
+
+Database link created.
+
+ 
+
+QUERiES :
+
+ 
+
+
+
+1. Find the salary of all employees.
+
+select distinct Eno from Emp1@emp_link1
+
+  2 union
+
+  3 select distinct salary from Emp2@emp_link2;
+
+
+
+
+
+
+
+ 
+
+
+18 rows selected. 
+
+2. Find the email of all employees where salary is = 20,000.
+
+select distinct Emp1.Eno@emp_link1,Emp2.Email@emp_link2 from Emp1@emp_link1,Emp2@emp_link2 wher
+
+e Emp2.salary@emp_link2=20000 and Emp1.eno@emp_link1=Emp2.eno@emp_link2;
+
+ 
+
+       ENO EMAIL
+
+---------- --------------------
+
+       102  Akshata@gmail.com
+
+ 
+
+3. Find the employee name and email where employee number is known.
+
+ select distinct Emp1.Ename@emp_link1,Emp2.Email@emp_link2 from Emp1@emp_link1,Emp2@emp_link2 wh
+
+ere Emp1.Eno@emp_link1=101 and Emp1.eno@emp_link1=Emp2.eno@emp_link2;
+
+ 
+
+ENAME                EMAIL
+
+-------------------- --------------------
+
+
+Samruddhi            Samruddhi@yahoo.com
+
+ 
+
+4. Find the employee name and address where employee number is known.
+
+ select distinct Emp1.Ename@emp_link1,Emp1.address@emp_link1 from Emp1@emp_link1,Emp2@emp_link2 
+
+where Emp2.Eno@emp_link2=105 and Emp1.eno@emp_link1=Emp2.eno@emp_link2;
+
+ 
+
+ENAME                ADDRESS
+
+-------------------- --------------------
+
+Kavita               Lanja
+
